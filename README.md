@@ -1,5 +1,5 @@
 <h2>Foot-Mounted Pedestrian Inertial Navigation Datasets</h2>
-<p align="justify">There are various datasets that are annotated with Vicon equipments. Some datasets are not open-source [1-2]. Some researchers made their data public [3-4].</p>
+<p align="justify">There are various datasets that are annotated with Vicon equipments. Some datasets are not public [1-2]. Some other datasets are public [3-4].</p>
 
 <ol>
     <li>Guimarães, V.; Sousa, I.; Correia, M.V. <a href="https://www.mdpi.com/1424-8220/21/11/3940" target="_blank">Orientation-Invariant Spatio-Temporal Gait Analysis Using Foot-Worn Inertial Sensors.</a> Sensors 2021, 21, 3940. https://doi.org/10.3390/s21113940</li>
