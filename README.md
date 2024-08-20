@@ -41,6 +41,16 @@ pip install pandas==1.1.5
 
 <p align="justify">After cloning this repository to your local computer, you must install <b><a href="https://github.com/utiasSTARS/liegroups" target="_blank">liegroups</a></b> package to run the code if you would like to reproduce the results shown here in this repo or the paper.</p>
 
+<h3>Example Results</h3>
+
+<img src="results/figs/own/zv_lstm_median_filtered_SensorConnectData_16.png" alt="ZV labels for median filtered LSTM robust ZUPT detector method - experiment 16" width=%100 height=auto>
+
+<img src="results/figs/own/SensorConnectData_16.png" alt="experiment 16 trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
+
+<img src="results/figs/own/zv_lstm_median_filtered_SensorConnectData_17.png" alt="ZV labels for median filtered LSTM robust ZUPT detector method - experiment 17" width=%100 height=auto>
+
+<img src="results/figs/own/SensorConnectData_17.png" alt="experiment 17 trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
+
 <h3>Adaptive and Robust ZUPT Detection Studies</h3>
 
 <p align="justify">Adaptive ZUPT studies [<a href="#ref1" id="gobacktoref1">1</a>, <a href="#ref2" id="gobacktoref2">2</a>, <a href="#ref3" id="gobacktoref3">3</a>, <a href="#ref4" id="gobacktoref4">4</a>]. Robust ZUPT detection studies employ various non-inertial sensing technologies such as magnetic sensors [<a href="#ref5 id="gobacktoref5"">5</a>], dynamic vision sensors (i.e., event cameras) [<a href="#ref6" id="gobacktoref6">6</a>], range sensor (i.e., ulrasonic sensor) [<a href="#ref7" id="gobacktoref7">7</a>] to accurately detect ZUPT samples in gait cycle and improve INS results.</p>
