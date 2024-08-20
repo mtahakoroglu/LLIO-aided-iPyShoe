@@ -28,6 +28,13 @@ legend = ['ARED', 'SHOE', 'LSTM']
 
 # gravity contant
 g = 9.8029
+# Plotting the results and zero velocity detections
+# processing zero velocity labels to turn a sampling frequency driven system into gait driven system (stride and heading system)
+numberOfStrides = [75, 24] # we counted these number of strides during the experiments
+# different size kernels for correct detection of number of strides taken by the pedestrian
+# kernel sizes are determined automatically in a brute-force search yet the correct values are noted here for time-saving purposes
+k = [21, 55]
+j = 0 # experiment index
 
 # Process each sensor data file
 for file in sensor_data_files:
@@ -64,21 +71,19 @@ for file in sensor_data_files:
         traj_list.append(x)
         zv_list.append(zv)
 
-    # Plotting the results and zero velocity detections
-    # processing zero velocity labels to turn a sampling frequency driven system into gait driven system (stride and heading system)
-    numberOfStrides = [75, 24] # we counted these number of strides during the experiments
-    j = 0 # experiment index
-    k = [21, 55] # different size kernels for correct detection of number of strides taken by the pedestrian
+    # Remove the '.csv' extension from the filename
+    base_filename = os.path.splitext(os.path.basename(file))[0]
+
     for i, zv in enumerate(zv_list):
         logging.info(f"Plotting zero velocity detection for {det_list[i]} detector for file: {file}")
         plt.figure()
         plt.plot(timestamps[:len(zv)], zv)
-        plt.title(f'{legend[i]} - {os.path.basename(file)}')
+        plt.title(f'{legend[i]} - {base_filename}')
         plt.xlabel('Time')
         plt.ylabel('Zero Velocity')
-        plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_{os.path.basename(file)}.png'))
+        plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_{base_filename}.png'))
         # Apply median filter to lstm detected zero velocity labels to eliminate undesired jumps
-        # that yields incorrect number of strides taken by the pedestrian.
+        # that yields incorrect count of strides taken by the pedestrian.
         if det_list[i] == 'lstm':
             logging.info(f"Plotting zero velocity detection for median filtered {det_list[i]} detector for file: {file}")
             print(f"Kernel size is {k[j]} for the current median filtering process.")
@@ -86,7 +91,7 @@ for file in sensor_data_files:
             zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary
             n, strideIndex = count_zero_to_one_transitions(zv_lstm_filtered)
             # while n != numberOfStrides[j]:
-            #     k = k + 2
+            #     k = k+2
             #     print(f"Kernel size is {k} for the current median filtering process.")
             #     zv_lstm_filtered = medfilt(zv, k)
             #     zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary
@@ -100,24 +105,24 @@ for file in sensor_data_files:
             print(f"There are {j} experiments conducted.")
             plt.figure()
             plt.plot(timestamps[:len(zv_lstm_filtered)], zv_lstm_filtered)
-            plt.scatter(timestamps[strideIndex], zv_lstm_filtered[strideIndex])
-            plt.title(f'{legend[i]} median filtered (n={n})- {os.path.basename(file)}')
+            plt.scatter(timestamps[strideIndex], zv_lstm_filtered[strideIndex], c='r', marker='x')
+            plt.title(f'{legend[i]} median filtered (n={n})- {base_filename}')
             plt.xlabel('Time')
             plt.ylabel('Zero Velocity')
-            plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_median_filtered_{os.path.basename(file)}.png'))
+            plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_median_filtered_{base_filename}.png'))
 
     plt.figure()
-    visualize.plot_topdown(traj_list, title=f'{os.path.basename(file)}', legend=legend)
-    # plt.scatter(traj_list[strideIndex])
-    plt.savefig(os.path.join(output_dir, f'{os.path.basename(file)}.png'))
+    visualize.plot_topdown(traj_list, title=f'{base_filename}', legend=legend)
+    plt.scatter(-traj_list[2][strideIndex, 0], traj_list[2][strideIndex, 1], c='r', marker='x')
+    plt.savefig(os.path.join(output_dir, f'{base_filename}.png'))
 
     plt.figure()
     for traj in traj_list:
         plt.plot(timestamps[:len(traj)], traj[:, 2])  # Ensure timestamps and trajectory lengths match
-    plt.title(f'Vertical Trajectories - {os.path.basename(file)}')
+    plt.title(f'Vertical Trajectories - {base_filename}')
     plt.xlabel('Time')
     plt.ylabel('Z Position')
     plt.legend(legend)
-    plt.savefig(os.path.join(output_dir, f'vertical_{os.path.basename(file)}.png'))
+    plt.savefig(os.path.join(output_dir, f'vertical_{base_filename}.png'))
 
 logging.info("Processing complete for all files.")
