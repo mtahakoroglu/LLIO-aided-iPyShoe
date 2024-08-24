@@ -33,7 +33,7 @@ g = 9.8029
 numberOfStrides = [75, 24] # we counted these number of strides during the experiments
 # different size kernels for correct detection of number of strides taken by the pedestrian
 # kernel sizes are determined automatically in a brute-force search yet the correct values are noted here for time-saving purposes
-k = [21, 55]
+# k = [21, 55]
 j = 0 # experiment index
 
 # Process each sensor data file
@@ -86,21 +86,22 @@ for file in sensor_data_files:
         # that yields incorrect count of strides taken by the pedestrian.
         if det_list[i] == 'lstm':
             logging.info(f"Plotting zero velocity detection for median filtered {det_list[i]} detector for file: {file}")
-            print(f"Kernel size is {k[j]} for the current median filtering process.")
-            zv_lstm_filtered = medfilt(zv, k[j])
-            zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary
-            n, strideIndex = count_zero_to_one_transitions(zv_lstm_filtered)
-            # while n != numberOfStrides[j]:
-            #     k = k+2
-            #     print(f"Kernel size is {k} for the current median filtering process.")
-            #     zv_lstm_filtered = medfilt(zv, k)
-            #     zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary
-            #     n, strideIndex = count_zero_to_one_transitions(zv_lstm_filtered)
-            # if n == numberOfStrides[j]:
-            #     print("Number of strides and the indices are correctly detected.")
-            print(f"There are {n} strides detected in the experiment.")
-            print(f"There are {numberOfStrides[j]} ground truth strides detected in the experiment.")
-            print(f"The stride indices are {strideIndex}")
+            # print(f"Kernel size is {k[j]} for the current median filtering process.")
+            # zv_lstm_filtered = medfilt(zv, k[j])
+            # zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary
+            # n, strideIndex = count_zero_to_one_transitions(zv_lstm_filtered)
+            k = 5
+            while True:
+                k = k+2
+                print(f"Kernel size is {k} for the current median filtering process.")
+                zv_lstm_filtered = medfilt(zv, k)
+                zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary
+                n, strideIndex = count_zero_to_one_transitions(zv_lstm_filtered)
+                if n == numberOfStrides[j]:
+                    print("Number of strides and the indices are correctly detected.")
+                    print(f"There are {n}/{numberOfStrides[j]} strides detected in the experiment.")
+                    print(f"The stride indices are {strideIndex}")
+                    break
             j = j+1
             print(f"There are {j} experiments conducted.")
             plt.figure()
