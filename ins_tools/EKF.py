@@ -12,9 +12,15 @@ class Localizer():
     def __init__(self, config, imudata):
         self.config = config
         self.imudata = imudata
+        self.gt = None  # Initialize gt to None
+        self.ts = None
         self.count=1
+    def set_gt(self, gt):
+        self.gt = gt  # Method to set the gt attribute later
+    def set_ts(self, time):
+        self.ts = time
     def init(self):
-        imudata = self.imudata 
+        imudata = self.imudata
         x = np.zeros((imudata.shape[0],9)) #initialize state to be at 0
         q = np.zeros((imudata.shape[0],4)) #Initialize quaternion 
         avg_x = np.mean(imudata[0:20,0])

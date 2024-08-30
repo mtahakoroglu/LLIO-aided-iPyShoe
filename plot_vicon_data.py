@@ -62,6 +62,8 @@ for file in vicon_data_files:
     ins = INS(imu_data, sigma_a=0.00098, sigma_w=8.7266463e-5, T=1.0/200)
 
     logging.info(f"Processing {detector[i]} detector for file: {file}")
+    ins.Localizer.set_gt(gt)  # Set the ground truth data required by 'vicon' detector
+    ins.Localizer.set_ts(timestamps) # Set the sampling time required by 'vicon' detector
     zv = ins.Localizer.compute_zv_lrt(W=5 if detector != 'mbgtd' else 2, G=thresh[i], detector=detector[i])
     x = ins.baseline(zv=zv)
 
