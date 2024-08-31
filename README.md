@@ -51,6 +51,12 @@ pip install pandas==1.1.5
 
 <img src="results/figs/own/SensorConnectData_17.png" alt="experiment 17 trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
 
+<h3>Example Results (Vicon Data)</h3>
+
+<img src="results/figs/vicon/vicon_data_trajectories_optimal_2017-11-22-11-22-46.png" alt="experiment 2017-11-22-11-22-46 Vicon trajectory" width=%100 height=auto>
+
+<img src="results/figs/vicon/vicon_data_zv_optimal_2017-11-22-11-22-46.png" alt="ZV labels for experiment 2017-11-22-11-22-46 Vicon trajectory" width=%100 height=auto>
+
 <h3>Adaptive and Robust ZUPT Detection Studies</h3>
 
 <p align="justify">Adaptive ZUPT studies [<a href="#ref1" id="gobacktoref1">1</a>, <a href="#ref2" id="gobacktoref2">2</a>, <a href="#ref3" id="gobacktoref3">3</a>, <a href="#ref4" id="gobacktoref4">4</a>]. Liu <i>et al.</i> proposed an improved generalized likelihood ratio test (IGLRT) approach by using Vicon dataset and Hallway dataset of PyShoe dataset <a href="#ref1" id="gobacktoref1">[1]</a>. Robust ZUPT detection studies employ various non-inertial sensing technologies such as magnetic sensors [<a href="#ref5 id="gobacktoref5"">5</a>], dynamic vision sensors (i.e., event cameras) [<a href="#ref6" id="gobacktoref6">6</a>], range sensor (i.e., ulrasonic sensor) [<a href="#ref7" id="gobacktoref7">7</a>] to accurately detect ZUPT samples in gait cycle and improve INS results.</p>

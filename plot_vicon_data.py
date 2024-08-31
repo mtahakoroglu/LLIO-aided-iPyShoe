@@ -37,11 +37,6 @@ thresh = [2750000, 0.1, 6250000, 15000000, 5500000, 0.08, 3000000, 3250000,
           12500000, 65000000, 0.725, 67500000, 300000000, 650000000, 1, 4250000,
           725000, 0.0175, 0.125, 42500000, 0.0675, 9750000, 3500000, 0.175]
 
-# Function to count one-to-zero transitions
-def count_one_to_zero_transitions(zv):
-    strides = np.where(np.diff(zv) < 0)[0] + 1
-    return len(strides), strides
-
 # Function to align trajectory with ground truth
 def align_trajectory(predicted, ground_truth):
     predicted_aligned, ground_truth_aligned = align_plots(predicted, ground_truth)
@@ -78,18 +73,20 @@ for file in vicon_data_files:
 
     # Automatically detect the stride indices using one-to-zero transitions
     n, strideIndex = count_one_to_zero_transitions(zv_filtered)
-    strideIndex = strideIndex - 1
-    strideIndex[0] = 0
-    strideIndex = np.append(strideIndex, len(gt)-1)
+    strideIndex = strideIndex - 1 # make all stride indexes the last samples of the respective ZUPT phase
+    strideIndex[0] = 0 # first sample is the first stride index
+    strideIndex = np.append(strideIndex, len(timestamps)-1) # last sample is the last stride index
     logging.info(f"Detected {n} strides in the data.")
 
+    # Remove the '.mat' extension from the filename
+    base_filename = os.path.splitext(os.path.basename(file))[0]
     # Plotting the trajectory and the ground truth with stride indices marked
     plt.figure()
-    visualize.plot_topdown([x_aligned, gt_aligned], title=f'{os.path.basename(file)}',
+    visualize.plot_topdown([x_aligned, gt_aligned], title=f'{os.path.basename(base_filename)}',
                            legend=[detector[i], 'Ground Truth'])
     plt.scatter(-x_aligned[strideIndex, 0], x_aligned[strideIndex, 1], c='r',
                 marker='x')  # Mark the stride points on the trajectory
-    plt.savefig(os.path.join(output_dir, f'vicon_data_trajectories_optimal_{os.path.basename(file)}.png'))
+    plt.savefig(os.path.join(output_dir, f'vicon_data_trajectories_optimal_{os.path.basename(base_filename)}.png'))
 
     plt.figure()
     plt.plot(timestamps[:len(x_aligned)], x_aligned[:, 2], label=detector[i])  # Plot INS Z positions
@@ -98,18 +95,18 @@ for file in vicon_data_files:
     plt.xlabel('Time')
     plt.ylabel('Z Position')
     plt.legend()
-    plt.savefig(os.path.join(output_dir, f'vicon_data_vertical_lstm_{os.path.basename(file)}.png'))
+    plt.savefig(os.path.join(output_dir, f'vicon_data_vertical_lstm_{os.path.basename(base_filename)}.png'))
 
     # Plotting the zero velocity detection for median filtered data with stride indices marked
     plt.figure()
     plt.plot(timestamps[:len(zv)], zv, label='Original')
     plt.plot(timestamps[:len(zv_filtered)], zv_filtered, label='Median Filtered')
     plt.scatter(timestamps[strideIndex], zv_filtered[strideIndex], c='r', marker='x')  # Mark the stride points
-    plt.title(f'Zero Velocity Detection - {os.path.basename(file)}')
+    plt.title(f'Zero Velocity Detection - {os.path.basename(base_filename)}')
     plt.xlabel('Time')
     plt.ylabel('Zero Velocity')
     plt.legend()
-    plt.savefig(os.path.join(output_dir, f'vicon_data_zv_optimal_{os.path.basename(file)}.png'))
+    plt.savefig(os.path.join(output_dir, f'vicon_data_zv_optimal_{os.path.basename(base_filename)}.png'))
 
     i += 1  # Move to the next experiment
 

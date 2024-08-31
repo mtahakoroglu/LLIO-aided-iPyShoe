@@ -94,11 +94,11 @@ for file in sensor_data_files:
                 print(f"Kernel size is {k} for the current median filtering process.")
                 # zv_lstm_filtered = median_filter(zv, k) # this is obsolete as GÇetin updated this as follows
                 zv_lstm_filtered = medfilt(zv, k)
-                zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary
+                zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary                
                 n, strideIndex = count_one_to_zero_transitions(zv_lstm_filtered)
-                strideIndex = strideIndex - 1
-                strideIndex[0] = 0
-                strideIndex = np.append(strideIndex, len(timestamps)-1)
+                strideIndex = strideIndex - 1 # make all stride indexes the last samples of the respective ZUPT phase
+                strideIndex[0] = 0 # first sample is the first stride index
+                strideIndex = np.append(strideIndex, len(timestamps)-1) # last sample is the last stride index
                 if n == numberOfStrides[j]:
                     print("Number of strides and the indices are correctly detected.")
                     print(f"There are {n}/{numberOfStrides[j]} strides detected in the experiment.")
