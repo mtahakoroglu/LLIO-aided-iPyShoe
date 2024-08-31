@@ -29,17 +29,17 @@ detector = ['shoe', 'ared', 'shoe', 'shoe', 'shoe', 'ared', 'shoe', 'shoe',
             'shoe', 'vicon', 'vicon', 'shoe', 'shoe', 'shoe', 'shoe', 'ared',
             'shoe', 'shoe', 'ared', 'shoe', 'shoe', 'shoe', 'ared', 'shoe',
             'shoe', 'ared', 'mbgtd', 'shoe', 'vicon', 'shoe', 'shoe', 'vicon']
-thresh = [2750000, 0.1, 6250000, 15000000, 5500000, 0.08, 3000000, 3250000, 
-          0.02, 97500000, 20000000, 0.0825, 0.1, 30000000, 0.0625, 0.225, 
-          92500000, 9000000, 0.015, 0.05, 3250000, 4500000, 0.1, 100000000, 
-          0.0725, 100000000, 15000000, 250000000, 0.0875, 0.0825, 0.0925, 70000000, 
-          525000000, 0.4, 0.375, 150000000, 175000000, 70000000, 27500000, 1.1, 
-          12500000, 65000000, 0.725, 67500000, 300000000, 650000000, 1, 4250000, 
+thresh = [2750000, 0.1, 6250000, 15000000, 5500000, 0.08, 3000000, 3250000,
+          0.02, 97500000, 20000000, 0.0825, 0.1, 30000000, 0.0625, 0.225,
+          92500000, 9000000, 0.015, 0.05, 3250000, 4500000, 0.1, 100000000,
+          0.0725, 100000000, 15000000, 250000000, 0.0875, 0.0825, 0.0925, 70000000,
+          525000000, 0.4, 0.375, 150000000, 175000000, 70000000, 27500000, 1.1,
+          12500000, 65000000, 0.725, 67500000, 300000000, 650000000, 1, 4250000,
           725000, 0.0175, 0.125, 42500000, 0.0675, 9750000, 3500000, 0.175]
 
-# Function to count zero-to-one transitions
-def count_zero_to_one_transitions(zv):
-    strides = np.where(np.diff(zv) > 0)[0] + 1
+# Function to count one-to-zero transitions
+def count_one_to_zero_transitions(zv):
+    strides = np.where(np.diff(zv) < 0)[0] + 1
     return len(strides), strides
 
 # Function to align trajectory with ground truth
@@ -47,7 +47,7 @@ def align_trajectory(predicted, ground_truth):
     predicted_aligned, ground_truth_aligned = align_plots(predicted, ground_truth)
     return predicted_aligned, ground_truth_aligned
 
-i = 0 # experiment index
+i = 0  # experiment index
 # Process each Vicon data file
 for file in vicon_data_files:
     logging.info(f"Processing file: {file}")
@@ -59,31 +59,36 @@ for file in vicon_data_files:
     gt = data['gt']  # Ground truth from Vicon dataset
 
     # Initialize INS object with correct parameters
-    ins = INS(imu_data, sigma_a=0.00098, sigma_w=8.7266463e-5, T=1.0/200)
+    ins = INS(imu_data, sigma_a=0.00098, sigma_w=8.7266463e-5, T=1.0 / 200)
 
     logging.info(f"Processing {detector[i]} detector for file: {file}")
     ins.Localizer.set_gt(gt)  # Set the ground truth data required by 'vicon' detector
-    ins.Localizer.set_ts(timestamps) # Set the sampling time required by 'vicon' detector
-    zv = ins.Localizer.compute_zv_lrt(W=5 if detector != 'mbgtd' else 2, G=thresh[i], detector=detector[i])
+    ins.Localizer.set_ts(timestamps)  # Set the sampling time required by 'vicon' detector
+    zv = ins.Localizer.compute_zv_lrt(W=5 if detector[i] != 'mbgtd' else 2, G=thresh[i], detector=detector[i])
     x = ins.baseline(zv=zv)
 
-    # Align the LSTM trajectory with the ground truth
+    # Align the trajectory with the ground truth
     x_aligned, gt_aligned = align_trajectory(x, gt)
 
-    # Apply median filter to LSTM zero velocity detection
+    # Apply median filter to zero velocity detection
     logging.info(f"Applying median filter to {detector[i]} zero velocity detection")
     kernel_size = 15  # Starting kernel size for median filter
     zv_filtered = medfilt(zv, kernel_size)
     zv_filtered[:100] = 1  # Ensure all labels are zero at the beginning as the foot is stationary
 
-    # Automatically detect the stride indices
-    n, strideIndex = count_zero_to_one_transitions(zv_filtered)
+    # Automatically detect the stride indices using one-to-zero transitions
+    n, strideIndex = count_one_to_zero_transitions(zv_filtered)
+    strideIndex = strideIndex - 1
+    strideIndex[0] = 0
+    strideIndex = np.append(strideIndex, len(gt)-1)
     logging.info(f"Detected {n} strides in the data.")
 
-    # Plotting the LSTM trajectory and the ground truth with stride indices marked
+    # Plotting the trajectory and the ground truth with stride indices marked
     plt.figure()
-    visualize.plot_topdown([x_aligned, gt_aligned], title=f'{os.path.basename(file)}', legend=[detector[i], 'Ground Truth'])
-    plt.scatter(-x_aligned[strideIndex, 0], x_aligned[strideIndex, 1], c='r', marker='x')  # Mark the stride points on the trajectory
+    visualize.plot_topdown([x_aligned, gt_aligned], title=f'{os.path.basename(file)}',
+                           legend=[detector[i], 'Ground Truth'])
+    plt.scatter(-x_aligned[strideIndex, 0], x_aligned[strideIndex, 1], c='r',
+                marker='x')  # Mark the stride points on the trajectory
     plt.savefig(os.path.join(output_dir, f'vicon_data_trajectories_optimal_{os.path.basename(file)}.png'))
 
     plt.figure()
@@ -105,6 +110,7 @@ for file in vicon_data_files:
     plt.ylabel('Zero Velocity')
     plt.legend()
     plt.savefig(os.path.join(output_dir, f'vicon_data_zv_optimal_{os.path.basename(file)}.png'))
-    i = i+1 # next experiment in VICON room
+
+    i += 1  # Move to the next experiment
 
 logging.info("Processing complete for all files.")

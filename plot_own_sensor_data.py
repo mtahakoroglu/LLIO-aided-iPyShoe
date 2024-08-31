@@ -7,6 +7,8 @@ from ins_tools.INS import INS
 import os
 import logging
 import glob
+import scipy.io as sio  # Import scipy.io for loading .mat files
+from scipy.signal import medfilt  # Import median filter
 
 # Directory of sensor data files
 sensor_data_dir = 'data/own'
@@ -90,9 +92,13 @@ for file in sensor_data_files:
             while True:
                 k = k+2
                 print(f"Kernel size is {k} for the current median filtering process.")
+                # zv_lstm_filtered = median_filter(zv, k) # this is obsolete as GÇetin updated this as follows
                 zv_lstm_filtered = medfilt(zv, k)
                 zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary
-                n, strideIndex = count_zero_to_one_transitions(zv_lstm_filtered)
+                n, strideIndex = count_one_to_zero_transitions(zv_lstm_filtered)
+                strideIndex = strideIndex - 1
+                strideIndex[0] = 0
+                strideIndex = np.append(strideIndex, len(timestamps)-1)
                 if n == numberOfStrides[j]:
                     print("Number of strides and the indices are correctly detected.")
                     print(f"There are {n}/{numberOfStrides[j]} strides detected in the experiment.")

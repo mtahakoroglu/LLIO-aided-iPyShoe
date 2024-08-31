@@ -1,6 +1,6 @@
 <h2>OpenShoe-PyShoe-DeepShoe-FuseShoe</h2>
 <h3>Creating PyShoe Virtual Environment in Anaconda</h3>
-<p align="justify">After installling Anaconda, open <b>Anaconda PowerShell</b> and then type</p>
+<p align="justify">After installling Anaconda, launch <b>Anaconda PowerShell</b> and then type</p>
 
 ```
 conda create --name pyshoe python=3.7
@@ -14,8 +14,8 @@ conda activate pyshoe
 
 <p align="justify">to activate <b>pyshoe</b> venv.</p>
 
-<h3>Installing Required PyShoe Packages</h3>
-<p align="justify">Type and enter the following commands in Anaconda PS terminal to install the required packages and libraries to run and reproduce the results in the page and the paper.</p>
+<h3>Installing Required Packages</h3>
+<p align="justify">Type and enter the following commands in Anaconda PS terminal to install the required packages and libraries to run PyShoe codes and reproduce the results in the page and the paper. We thank <a href="https://scholar.google.com.tr/citations?user=F2NkKNAAAAAJ&hl=tr">Dr. Ramazan Özgür Doğan</a> for the assistance in setting up the environment.</p>
 
 ```
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
@@ -41,7 +41,7 @@ pip install pandas==1.1.5
 
 <p align="justify">After cloning this repository to your local computer, you must install <b><a href="https://github.com/utiasSTARS/liegroups" target="_blank">liegroups</a></b> package to run the code if you would like to reproduce the results shown here in this repo or the paper.</p>
 
-<h3>Example Results</h3>
+<h3>Example Results (Own Sensor Data)</h3>
 
 <img src="results/figs/own/zv_lstm_median_filtered_SensorConnectData_16.png" alt="ZV labels for median filtered LSTM robust ZUPT detector method - experiment 16" width=%100 height=auto>
 
@@ -53,7 +53,7 @@ pip install pandas==1.1.5
 
 <h3>Adaptive and Robust ZUPT Detection Studies</h3>
 
-<p align="justify">Adaptive ZUPT studies [<a href="#ref1" id="gobacktoref1">1</a>, <a href="#ref2" id="gobacktoref2">2</a>, <a href="#ref3" id="gobacktoref3">3</a>, <a href="#ref4" id="gobacktoref4">4</a>]. Robust ZUPT detection studies employ various non-inertial sensing technologies such as magnetic sensors [<a href="#ref5 id="gobacktoref5"">5</a>], dynamic vision sensors (i.e., event cameras) [<a href="#ref6" id="gobacktoref6">6</a>], range sensor (i.e., ulrasonic sensor) [<a href="#ref7" id="gobacktoref7">7</a>] to accurately detect ZUPT samples in gait cycle and improve INS results.</p>
+<p align="justify">Adaptive ZUPT studies [<a href="#ref1" id="gobacktoref1">1</a>, <a href="#ref2" id="gobacktoref2">2</a>, <a href="#ref3" id="gobacktoref3">3</a>, <a href="#ref4" id="gobacktoref4">4</a>]. Liu <i>et al.</i> proposed an improved generalized likelihood ratio test (IGLRT) approach by using Vicon dataset and Hallway dataset of PyShoe dataset <a href="#ref1" id="gobacktoref1">[1]</a>. Robust ZUPT detection studies employ various non-inertial sensing technologies such as magnetic sensors [<a href="#ref5 id="gobacktoref5"">5</a>], dynamic vision sensors (i.e., event cameras) [<a href="#ref6" id="gobacktoref6">6</a>], range sensor (i.e., ulrasonic sensor) [<a href="#ref7" id="gobacktoref7">7</a>] to accurately detect ZUPT samples in gait cycle and improve INS results.</p>
 
 <h2>Foot-Mounted Pedestrian Inertial Navigation Datasets</h2>
 <p align="justify">There are various datasets that are annotated with Vicon equipments. Some datasets are public [8-9]. Some datasets are not public [13-15]. OptiTrack (an optical motion capture system) study uses Heuristic Drift Reduction (HRD) to deal with heading errors [15].</p>

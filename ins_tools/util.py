@@ -297,7 +297,8 @@ class StairErrorLogger():
             writer.writerows(results_list)
 
 # adopted from https://gist.github.com/bhawkins/3535131 by mtahakoroglu
-def medfilt(x, k):
+# this function is no more used as GÇetin used medfilt function from scipy
+def median_filter(x, k):
     """Apply a length-k median filter to a 1D array x.
     Boundaries are extended by repeating endpoints.
     """
@@ -314,6 +315,7 @@ def medfilt(x, k):
         y[-j:,-(i+1)] = x[-1]
     return np.median (y, axis=1)
 
+# this function is no more used for stride detection
 def count_zero_to_one_transitions(arr):
     # Ensure the array is a NumPy array
     arr = np.asarray(arr)
@@ -323,3 +325,8 @@ def count_zero_to_one_transitions(arr):
     
     # Return the count and the indexes
     return len(transitions), transitions + 1  # Add 1 to get the index of the '1'
+
+# Function to count one-to-zero transitions to detemine stride indexes
+def count_one_to_zero_transitions(zv):
+    strides = np.where(np.diff(zv) < 0)[0] + 1
+    return len(strides), strides
