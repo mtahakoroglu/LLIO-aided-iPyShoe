@@ -47,16 +47,16 @@ pip install pandas==1.1.5
 
 <img src="results/figs/own/SensorConnectData_16.png" alt="experiment 16 trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
 
-<img src="results/figs/own/zv_lstm_median_filtered_SensorConnectData_18.png" alt="ZV labels for median filtered adaptive ZUPT (LSTM) detector method - experiment 18" width=%100 height=auto>
+<img src="results/figs/own/zv_lstm_median_filtered_SensorConnectData_19.png" alt="ZV labels for median filtered adaptive ZUPT (LSTM) detector method - experiment 18" width=%100 height=auto>
 
-<img src="results/figs/own/SensorConnectData_18.png" alt="experiment 18 trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
+<img src="results/figs/own/SensorConnectData_19.png" alt="experiment 18 trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
 
 <h4>Trajectory as only Strides (interpolated)</h4>
 <p align="justify">Here, the trajectories are formed by using only stride indexes (interpolated).</p>
 
 <img src="results/figs/own/SensorConnectData_16_LSTM_ZUPT_strides.png" alt="experiment 16 only stride (interpolated) trajectories obtained with adaptive ZUPT (LSTM) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
 
-<img src="results/figs/own/SensorConnectData_18_LSTM_ZUPT_strides.png" alt="experiment 18 only stride (interpolated) trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
+<img src="results/figs/own/SensorConnectData_19_LSTM_ZUPT_strides.png" alt="experiment 18 only stride (interpolated) trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
 
 <h3>Example Results (Vicon Data)</h3>
 

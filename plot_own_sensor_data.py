@@ -32,7 +32,7 @@ legend = ['ARED', 'SHOE', 'LSTM']
 g = 9.8029
 # Plotting the results and zero velocity detections
 # processing zero velocity labels to turn a sampling frequency driven system into gait driven system (stride and heading system)
-numberOfStrides = [75, 24, 27] # we counted these number of strides during the experiments
+numberOfStrides = [75, 24, 28] # [75, 24, 28] we counted respective number of strides during the experiments
 # different size kernels for correct detection of number of strides taken by the pedestrian
 # kernel sizes are determined automatically in a brute-force search yet the correct values are noted here for time-saving purposes
 # k = [21, 55]
@@ -83,7 +83,7 @@ for file in sensor_data_files:
         plt.title(f'{legend[i]} - {base_filename}')
         plt.xlabel('Time')
         plt.ylabel('Zero Velocity')
-        plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_{base_filename}.png'))
+        plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_{base_filename}.png'), bbox_inches='tight')
         # Apply median filter to lstm detected zero velocity labels to eliminate undesired jumps
         # that yields incorrect count of strides taken by the pedestrian.
         if det_list[i] == 'lstm':
@@ -94,7 +94,7 @@ for file in sensor_data_files:
                 print(f"Kernel size is {k} for the current median filtering process.")
                 # zv_lstm_filtered = median_filter(zv, k) # this is obsolete as GÇetin updated this as follows
                 zv_lstm_filtered = medfilt(zv, k)
-                zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary                
+                zv_lstm_filtered[:100] = 1 # make sure all labels are zero at the beginning as the foot is stationary
                 n, strideIndex = count_one_to_zero_transitions(zv_lstm_filtered)
                 strideIndex = strideIndex - 1 # make all stride indexes the last samples of the respective ZUPT phase
                 strideIndex[0] = 0 # first sample is the first stride index
@@ -109,7 +109,7 @@ for file in sensor_data_files:
             plt.figure()
             plt.plot(timestamps[:len(zv_lstm_filtered)], zv_lstm_filtered)
             plt.scatter(timestamps[strideIndex], zv_lstm_filtered[strideIndex], c='r', marker='x')
-            plt.title(f'{legend[i]} median filtered (n={n})- {base_filename}')
+            plt.title(f'{legend[i]} median filtered (n={n}) - {base_filename}')
             plt.xlabel('Time')
             plt.ylabel('Zero Velocity')
             plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_median_filtered_{base_filename}.png'), bbox_inches='tight')
@@ -124,7 +124,7 @@ for file in sensor_data_files:
     plt.legend(fontsize=15)
     plt.ylabel('y (m)', fontsize=22)
     plt.xlabel('x (m)', fontsize=22)
-    plt.title(f'LSTM median filtered (n={n})- {base_filename}', fontsize=22)
+    plt.title(f'LSTM median filtered (n={n}) - {base_filename}', fontsize=22)
     plt.tick_params(labelsize=22)
     plt.grid(True, which='both', linestyle='--', linewidth=1.5)
     plt.savefig(os.path.join(output_dir, f'{base_filename}_LSTM_ZUPT_strides.png'), bbox_inches='tight')
