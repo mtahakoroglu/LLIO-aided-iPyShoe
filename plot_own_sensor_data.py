@@ -32,7 +32,7 @@ legend = ['ARED', 'SHOE', 'LSTM']
 g = 9.8029
 # Plotting the results and zero velocity detections
 # processing zero velocity labels to turn a sampling frequency driven system into gait driven system (stride and heading system)
-numberOfStrides = [75, 24] # we counted these number of strides during the experiments
+numberOfStrides = [75, 24, 27] # we counted these number of strides during the experiments
 # different size kernels for correct detection of number of strides taken by the pedestrian
 # kernel sizes are determined automatically in a brute-force search yet the correct values are noted here for time-saving purposes
 # k = [21, 55]
@@ -112,20 +112,30 @@ for file in sensor_data_files:
             plt.title(f'{legend[i]} median filtered (n={n})- {base_filename}')
             plt.xlabel('Time')
             plt.ylabel('Zero Velocity')
-            plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_median_filtered_{base_filename}.png'))
+            plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_median_filtered_{base_filename}.png'), bbox_inches='tight')
 
     plt.figure()
     visualize.plot_topdown(traj_list, title=f'{base_filename}', legend=legend)
     plt.scatter(-traj_list[2][strideIndex, 0], traj_list[2][strideIndex, 1], c='r', marker='x')
-    plt.savefig(os.path.join(output_dir, f'{base_filename}.png'))
+    plt.savefig(os.path.join(output_dir, f'{base_filename}.png'), bbox_inches='tight')
 
     plt.figure()
-    for traj in traj_list:
-        plt.plot(timestamps[:len(traj)], traj[:, 2])  # Ensure timestamps and trajectory lengths match
-    plt.title(f'Vertical Trajectories - {base_filename}')
-    plt.xlabel('Time')
-    plt.ylabel('Z Position')
-    plt.legend(legend)
-    plt.savefig(os.path.join(output_dir, f'vertical_{base_filename}.png'))
+    plt.plot(-traj_list[2][strideIndex, 0], traj_list[2][strideIndex, 1], c='r', marker='x', label=f"adaptive ZUPT (LSTM) {base_filename}")
+    plt.legend(fontsize=15)
+    plt.ylabel('y (m)', fontsize=22)
+    plt.xlabel('x (m)', fontsize=22)
+    plt.title(f'LSTM median filtered (n={n})- {base_filename}', fontsize=22)
+    plt.tick_params(labelsize=22)
+    plt.grid(True, which='both', linestyle='--', linewidth=1.5)
+    plt.savefig(os.path.join(output_dir, f'{base_filename}_LSTM_ZUPT_strides.png'), bbox_inches='tight')
+    
+    # plt.figure()
+    # for traj in traj_list:
+    #     plt.plot(timestamps[:len(traj)], traj[:, 2])  # Ensure timestamps and trajectory lengths match
+    # plt.title(f'Vertical Trajectories - {base_filename}')
+    # plt.xlabel('Time')
+    # plt.ylabel('Z Position')
+    # plt.legend(legend)
+    # plt.savefig(os.path.join(output_dir, f'vertical_{base_filename}.png'))
 
 logging.info("Processing complete for all files.")
