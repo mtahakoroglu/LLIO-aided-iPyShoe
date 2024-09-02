@@ -6,3 +6,28 @@ Plotting zero velocity detection for ared detector for file: data/own\SensorConn
 Plotting zero velocity detection for shoe detector for file: data/own\SensorConnectData_16.csv
 Plotting zero velocity detection for lstm detector for file: data/own\SensorConnectData_16.csv
 Plotting zero velocity detection for median filtered lstm detector for file: data/own\SensorConnectData_16.csv
+Processing file: data/own\SensorConnectData_16.csv
+Processing ared detector for file: data/own\SensorConnectData_16.csv
+Processing shoe detector for file: data/own\SensorConnectData_16.csv
+Processing lstm detector for file: data/own\SensorConnectData_16.csv
+Plotting zero velocity detection for ared detector for file: data/own\SensorConnectData_16.csv
+Plotting zero velocity detection for shoe detector for file: data/own\SensorConnectData_16.csv
+Plotting zero velocity detection for lstm detector for file: data/own\SensorConnectData_16.csv
+Plotting zero velocity detection for median filtered lstm detector for file: data/own\SensorConnectData_16.csv
+Processing file: data/own\SensorConnectData_17.csv
+Processing ared detector for file: data/own\SensorConnectData_17.csv
+Processing shoe detector for file: data/own\SensorConnectData_17.csv
+Processing lstm detector for file: data/own\SensorConnectData_17.csv
+Plotting zero velocity detection for ared detector for file: data/own\SensorConnectData_17.csv
+Plotting zero velocity detection for shoe detector for file: data/own\SensorConnectData_17.csv
+Plotting zero velocity detection for lstm detector for file: data/own\SensorConnectData_17.csv
+Plotting zero velocity detection for median filtered lstm detector for file: data/own\SensorConnectData_17.csv
+Processing file: data/own\SensorConnectData_18.csv
+Processing ared detector for file: data/own\SensorConnectData_18.csv
+Processing shoe detector for file: data/own\SensorConnectData_18.csv
+Processing lstm detector for file: data/own\SensorConnectData_18.csv
+Plotting zero velocity detection for ared detector for file: data/own\SensorConnectData_18.csv
+Plotting zero velocity detection for shoe detector for file: data/own\SensorConnectData_18.csv
+Plotting zero velocity detection for lstm detector for file: data/own\SensorConnectData_18.csv
+Plotting zero velocity detection for median filtered lstm detector for file: data/own\SensorConnectData_18.csv
+Processing complete for all files.
