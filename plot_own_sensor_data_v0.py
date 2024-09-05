@@ -16,7 +16,7 @@ sensor_data_dir = 'data/own'
 sensor_data_files = glob.glob(os.path.join(sensor_data_dir, 'SensorConnectData_*.csv'))
 
 # Set up logging
-output_dir = "results/figs/own"
+output_dir = "results/figs/own_median"
 os.makedirs(output_dir, exist_ok=True)
 log_file = os.path.join(output_dir, 'output.log')
 logging.basicConfig(level=logging.INFO, format='%(message)s',

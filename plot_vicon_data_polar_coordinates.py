@@ -88,7 +88,9 @@ for file in vicon_data_files:
 
     # Apply median filter to zero velocity detection
     logging.info(f"Applying heuristic filter to {detector[i]} zero velocity detection")
-    k = 45 # temporal window size for checking if detected strides are too close or not
+    k = 65 # temporal window size for checking if detected strides are too close or not
+    print(f"zv size: {zv.shape}")
+    print(f"zv content: {zv}")
     zv_filtered, n, strideIndex = heuristic_zv_filter_and_stride_detector(zv, k)
     logging.info(f"Detected {n} strides in the data.")
 
@@ -106,6 +108,7 @@ for file in vicon_data_files:
     plt.figure()
     visualize.plot_topdown([reconstructed_traj, gt[:, :2]], title=base_filename,
                            legend=['Stride & Heading', 'GT (sample-wise)'])
+    plt.scatter(-reconstructed_traj[:, 0], reconstructed_traj[:, 1], c='b', marker='x')
     plt.grid(True, which='both', linestyle='--', linewidth=1.5)
     plt.savefig(os.path.join(output_dir, f'stride_and_heading_{base_filename}.png'), dpi=600, bbox_inches='tight')
 
@@ -123,7 +126,8 @@ for file in vicon_data_files:
     # Plotting the zero velocity detection for median filtered data without stride indices
     plt.figure()
     plt.plot(timestamps[:len(zv)], zv, label='Original')
-    plt.plot(timestamps[:len(zv_filtered)], zv_filtered, label='Median Filtered')
+    plt.plot(timestamps[:len(zv_filtered)], zv_filtered, label='Heuristically Filtered')
+    plt.scatter(timestamps[strideIndex], zv_filtered[strideIndex], c='r', marker='x')
     plt.title(f'Zero Velocity Detection - {base_filename}')
     plt.xlabel('Time')
     plt.ylabel('Zero Velocity')

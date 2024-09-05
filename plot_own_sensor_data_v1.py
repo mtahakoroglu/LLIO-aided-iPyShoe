@@ -16,7 +16,7 @@ sensor_data_dir = 'data/own'
 sensor_data_files = glob.glob(os.path.join(sensor_data_dir, 'SensorConnectData_*.csv'))
 
 # Set up logging
-output_dir = "results/figs/own_updated"
+output_dir = "results/figs/own_heuristic"
 os.makedirs(output_dir, exist_ok=True)
 log_file = os.path.join(output_dir, 'output.log')
 logging.basicConfig(level=logging.INFO, format='%(message)s',
@@ -87,8 +87,10 @@ for file in sensor_data_files:
         plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_{base_filename}.png'), dpi=600, bbox_inches='tight')
         # Apply a heuristic filter to adaptively detected zero velocity labels (via LSTM) to eliminate undesired jumps & achieve correct stride detection
         if det_list[i] == 'lstm':
-            logging.info(f"Plotting zero velocity detection for median filtered {det_list[i]} detector for file: {file}")
+            logging.info(f"Plotting zero velocity detection for heuristically filtered {det_list[i]} detector for file: {file}")
             k = 45 # temporal window size for checking if detected strides are too close or not
+            print(f"zv size: {zv.shape}")
+            print(f"zv content: {zv}")
             zv_lstm_filtered, n, strideIndex = heuristic_zv_filter_and_stride_detector(zv, k)
             if n == numberOfStrides[j]:
                 print("Number of strides and the indices are correctly detected.")
@@ -99,10 +101,10 @@ for file in sensor_data_files:
             plt.figure()
             plt.plot(timestamps[:len(zv_lstm_filtered)], zv_lstm_filtered)
             plt.scatter(timestamps[strideIndex], zv_lstm_filtered[strideIndex], c='r', marker='x')
-            plt.title(f'{legend[i]} heuristic filtered (n={n}) - {base_filename}')
+            plt.title(f'{legend[i]} heuristically filtered (n={n}) - {base_filename}')
             plt.xlabel('Time')
             plt.ylabel('Zero Velocity')
-            plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_median_filtered_{base_filename}.png'), dpi=600, bbox_inches='tight')
+            plt.savefig(os.path.join(output_dir, f'zv_{det_list[i]}_heuristically_filtered_{base_filename}.png'), dpi=600, bbox_inches='tight')
 
     plt.figure()
     visualize.plot_topdown(traj_list, title=f'{base_filename}', legend=legend)
@@ -114,7 +116,7 @@ for file in sensor_data_files:
     plt.legend(fontsize=15)
     plt.ylabel('y (m)', fontsize=22)
     plt.xlabel('x (m)', fontsize=22)
-    plt.title(f'LSTM median filtered (n={n}) - {base_filename}', fontsize=22)
+    plt.title(f'LSTM heuristically filtered (n={n}) - {base_filename}', fontsize=22)
     plt.tick_params(labelsize=22)
     plt.grid(True, which='both', linestyle='--', linewidth=1.5)
     plt.savefig(os.path.join(output_dir, f'{base_filename}_LSTM_ZUPT_strides.png'), dpi=600, bbox_inches='tight')

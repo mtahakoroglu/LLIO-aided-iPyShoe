@@ -332,6 +332,8 @@ def count_one_to_zero_transitions(zv):
     return len(strides), strides
 
 def heuristic_zv_filter_and_stride_detector(zv, k):
+    if zv.dtype == 'bool':
+        zv = zv.astype(int)
     zv[:50] = 1 # make sure all labels are zero at the beginning as the foot is stationary
     # detect strides (falling edge of zv binary signal) and respective indexes
     n, strideIndexFall = count_one_to_zero_transitions(zv)
