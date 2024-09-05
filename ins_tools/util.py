@@ -330,3 +330,22 @@ def count_zero_to_one_transitions(arr):
 def count_one_to_zero_transitions(zv):
     strides = np.where(np.diff(zv) < 0)[0] + 1
     return len(strides), strides
+
+def heuristic_zv_filter_and_stride_detector(zv, k):
+    zv[:50] = 1 # make sure all labels are zero at the beginning as the foot is stationary
+    # detect strides (falling edge of zv binary signal) and respective indexes
+    n, strideIndexFall = count_one_to_zero_transitions(zv)
+    strideIndexFall = strideIndexFall - 1 # make all stride indexes the last samples of the respective ZUPT phase
+    strideIndexFall[0] = 0 # first sample is the first stride index
+    strideIndexFall = np.append(strideIndexFall, len(zv)-1) # last sample is the last stride index
+    # detect rising edge indexes of zv labels
+    n2, strideIndexRise = count_zero_to_one_transitions(zv)
+    for i in range(len(strideIndexRise)):
+        if (strideIndexRise[i] - strideIndexFall[i] < k):
+            zv[strideIndexFall[i]:strideIndexRise[i]] = 1 # make all samples in between one
+    # after the correction is completed, do the stride index detection process again
+    n, strideIndexFall = count_one_to_zero_transitions(zv)
+    strideIndexFall = strideIndexFall - 1 # make all stride indexes the last samples of the respective ZUPT phase
+    strideIndexFall[0] = 0 # first sample is the first stride index
+    strideIndexFall = np.append(strideIndexFall, len(zv)-1) # last sample is the last stride index
+    return zv, n, strideIndexFall

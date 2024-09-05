@@ -30,7 +30,7 @@ def plot_topdown(traj, trigger_ind=None, gt_method = 'dense', title=None, save_d
     plt.legend(legend, fontsize=15, numpoints=1)
     plt.grid()
     if save_dir:
-        plt.savefig(save_dir, dpi=400, bbox_inches='tight')
+        plt.savefig(save_dir, dpi=1200, bbox_inches='tight')
 
 ###Plot the vertical estimate wrt time.  (traj is a list of trajectories, no ground truth is required)
 def plot_vertical(ts, traj, trigger_ind=None, title=None, save_dir=None, legend=[], Loc=4, markerind =[]):
