@@ -28,7 +28,7 @@ def plot_topdown(traj, trigger_ind=None, gt_method = 'dense', title=None, save_d
     plt.tick_params(labelsize=22)
     plt.subplots_adjust(top=0.8)
     plt.legend(legend, fontsize=15, numpoints=1)
-    plt.grid()
+    plt.grid(True, which='both', linestyle='--', linewidth=1.5)
     if save_dir:
         plt.savefig(save_dir, dpi=1200, bbox_inches='tight')
 

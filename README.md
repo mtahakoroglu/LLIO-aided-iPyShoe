@@ -37,26 +37,13 @@ conda install matplotlib
 pip install pandas==1.1.5
 ```
 
-<h3>Installing liegroups package</h3>
+<h3>Installing <b>liegroups</b> package</h3>
 
 <p align="justify">After cloning this repository to your local computer, you must install <b><a href="https://github.com/utiasSTARS/liegroups" target="_blank">liegroups</a></b> package to run the code if you would like to reproduce the results shown here in this repo or the paper.</p>
 
 <h3>Example Results (Own Sensor Data)</h3>
 
-<img src="results/figs/own_heuristic/zv_lstm_heuristically_filtered_SensorConnectData_16.png" alt="ZV labels for median filtered adaptive ZUPT (LSTM) detector method - experiment 16" width=%100 height=auto>
-
-<img src="results/figs/own_heuristic/SensorConnectData_16.png" alt="experiment 16 trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
-
-<img src="results/figs/own_heuristic/zv_lstm_heuristically_filtered_SensorConnectData_19.png" alt="ZV labels for median filtered adaptive ZUPT (LSTM) detector method - experiment 18" width=%100 height=auto>
-
-<img src="results/figs/own_heuristic/SensorConnectData_19.png" alt="experiment 18 trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
-
-<h4>Trajectory as only Strides (interpolated)</h4>
-<p align="justify">Here, the trajectories are formed by using only stride indexes (interpolated).</p>
-
-<img src="results/figs/own_heuristic/SensorConnectData_16_LSTM_ZUPT_strides.png" alt="experiment 16 only stride (interpolated) trajectories obtained with adaptive ZUPT (LSTM) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
-
-<img src="results/figs/own_heuristic/SensorConnectData_19_LSTM_ZUPT_strides.png" alt="experiment 18 only stride (interpolated) trajectories obtained with (various) ZUPT (detectors) aided (Error-State Kalman Filter based) foot-mounted INS" width=%100 height=auto>
+<p align="justify">At this point in our research, when we first tried adaptive INS based on pre-trained LSTM ZUPT detector in PyShoe dataset, we noticed that the adaptive detector is not able to detect some of the strides in the experiments. In order to deal with this problem, which required re-training of the proposed bi-directional LSTM network inevitably, we made corrections (i.e., manual inclusions of missed ZUPT phases and strides, and exclusions of non-bipedal-locomotion data such as crawling) in PyShoe dataset. All mentioned work can be found elaborately in <a href="https://github.com/mtahakoroglu/PyShoe-dataset-correction-for-bipedal-locomotion">supplementary repo.</a></p>
 
 <h3>Example Results (Vicon Data)</h3>
 
@@ -66,7 +53,7 @@ pip install pandas==1.1.5
 
 <h3>Adaptive and Robust ZUPT Detection Studies</h3>
 
-<p align="justify">Adaptive ZUPT studies [<a href="#ref1" id="gobacktoref1">1</a>, <a href="#ref2" id="gobacktoref2">2</a>, <a href="#ref3" id="gobacktoref3">3</a>, <a href="#ref4" id="gobacktoref4">4</a>]. Liu <i>et al.</i> proposed an improved generalized likelihood ratio test (IGLRT) approach by using Vicon dataset and Hallway dataset of PyShoe dataset <a href="#ref1" id="gobacktoref1">[1]</a>. Robust ZUPT detection studies employ various non-inertial sensing technologies such as magnetic sensors [<a href="#ref5 id="gobacktoref5"">5</a>], dynamic vision sensors (i.e., event cameras) [<a href="#ref6" id="gobacktoref6">6</a>], range sensor (i.e., ulrasonic sensor) [<a href="#ref7" id="gobacktoref7">7</a>] to accurately detect ZUPT samples in gait cycle and improve INS results.</p>
+<p align="justify">Adaptive ZUPT studies [<a href="#ref1" id="gobacktoref1">1</a>, <a href="#ref2" id="gobacktoref2">2</a>, <a href="#ref3" id="gobacktoref3">3</a>, <a href="#ref4" id="gobacktoref4">4</a>]. Liu <i>et al.</i> proposed an improved generalized likelihood ratio test (IGLRT) approach by using Vicon and Hallway experiments of PyShoe dataset <a href="#ref1" id="gobacktoref1">[1]</a>. Robust ZUPT detection studies employ various non-inertial sensing technologies such as magnetic sensors [<a href="#ref5 id="gobacktoref5"">5</a>], dynamic vision sensors (i.e., event cameras) [<a href="#ref6" id="gobacktoref6">6</a>], range sensor (i.e., ulrasonic sensor) [<a href="#ref7" id="gobacktoref7">7</a>] to accurately detect ZUPT samples in gait cycle and improve INS results.</p>
 
 <h2>Foot-Mounted Pedestrian Inertial Navigation Datasets</h2>
 <p align="justify">There are various datasets that are annotated with Vicon equipments. Some datasets are public [8-9]. Some datasets are not public [13-15]. OptiTrack (an optical motion capture system) study uses Heuristic Drift Reduction (HRD) to deal with heading errors [15].</p>
@@ -75,7 +62,7 @@ pip install pandas==1.1.5
 <h4>Johan Wahlström & Isaac Skog's comments</h4>
 <p align="justify"><b>Wahlström</b> <i>et al.</i> states that a reasonable approach to detect the actual ZUPT samples in a gait cycle would be to label the sensor unit as stationary whenever the velocity is zero [13]. This approach suffers from sensor and modeling errors as mentioned in [13]. More importantly, as the gait speed of the pedestrian changes, the threshold has to be calibrated. The natural solution is to set this threshold in such a way that the navigation performance is optimized. This idea is explored in PyShoe, where several zero-velocity detectors with different fixed thresholds were applied, one by one, to a number of motion trials (sequences of training data). This included both conventional detectors (e.g., SHOE, ARED) based on foot-mounted inertial measurements and detectors that utilized velocity estimates from high-accuracy reference systems (i.e., VICON). For each motion trial, ground-truth zero-velocity labels are extracted from the detector-threshold pair that gave the best positioning performance. To ensure that the best-performing fixed-threshold detector is approximately optimal over a given motion trial (so that there is no time-varying threshold that will give a substantially better performance), the environment and gait style (e.g., walking, running) were fixed within each individual motion trial.</p>
 
-<p align="justify">PyShoe dataset is divided into two groups: Training and testing data. The training data - consisting of walking, running, stair-climbing, and crawling - was recorded from one user in a motion capture area of about 5m x 5m, and includes ground truth position from a camera tracking system. The testing data is divided into two subsets. The first subset was recorded in the hallways of a university buiding and includes ground truth at manually surveyed locations. This subset was recorded from five users alternating between walking and running. The second subset was recorded from one user walking up and down a staircase and includes ground truth vertical position data on a per-flight basis. In addition, each data recording in the second subset started and ended at the same position, and thus, the position accuracy can be evaluated based on
+<p align="justify">PyShoe dataset is divided into two groups: Training and testing data. The training data - consisting of walking, running, stair-climbing, and crawling - was recorded from one user in a motion capture area of about 5m x 5m, and includes ground truth position from a camera tracking system. The testing data is divided into two subsets. The first subset was recorded in the hallways of a university building and includes ground truth at manually surveyed locations. This subset was recorded from five users alternating between walking and running. The second subset was recorded from one user walking up and down a staircase and includes ground truth vertical position data on a per-flight basis. In addition, each data recording in the second subset started and ended at the same position, and thus, the position accuracy can be evaluated based on
 the corresponding loop-closure error. In [98], this data set was used to compare the performance of six zero-velocity detectors. Code was provided alongside the data.</p>
 
 <h3>Studies that use PyShoe</h3>

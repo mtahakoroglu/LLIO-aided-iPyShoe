@@ -7,7 +7,7 @@ import csv
 from liegroups import SO3
     
 #rotates a (Nx3) trajectory traj1 to align with another (Nx3)trajectory traj2
-def align_plots(traj1,traj2, dist=0.8, use_totstat=False, align_idx=None):
+def align_plots(traj1, traj2, dist=0.8, use_totstat=False, align_idx=None):
     if use_totstat == False:
             #remove any offset between trajectories (origins should begin at 0)
         traj1 = traj1 - traj1[0]
@@ -338,7 +338,6 @@ def heuristic_zv_filter_and_stride_detector(zv, k):
     # detect strides (falling edge of zv binary signal) and respective indexes
     n, strideIndexFall = count_one_to_zero_transitions(zv)
     strideIndexFall = strideIndexFall - 1 # make all stride indexes the last samples of the respective ZUPT phase
-    strideIndexFall[0] = 0 # first sample is the first stride index
     strideIndexFall = np.append(strideIndexFall, len(zv)-1) # last sample is the last stride index
     # detect rising edge indexes of zv labels
     n2, strideIndexRise = count_zero_to_one_transitions(zv)
@@ -348,6 +347,5 @@ def heuristic_zv_filter_and_stride_detector(zv, k):
     # after the correction is completed, do the stride index detection process again
     n, strideIndexFall = count_one_to_zero_transitions(zv)
     strideIndexFall = strideIndexFall - 1 # make all stride indexes the last samples of the respective ZUPT phase
-    strideIndexFall[0] = 0 # first sample is the first stride index
     strideIndexFall = np.append(strideIndexFall, len(zv)-1) # last sample is the last stride index
     return zv, n, strideIndexFall
