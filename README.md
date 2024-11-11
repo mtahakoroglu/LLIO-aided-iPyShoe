@@ -1,4 +1,4 @@
-<h2>OpenShoe-PyShoe-DeepShoe-FuseShoe</h2>
+<h2>Gradient Boosting Based Loose Learned Inertial Odometry</h2>
 <h3>Creating PyShoe Virtual Environment in Anaconda</h3>
 <p align="justify">After installling Anaconda, launch <b>Anaconda PowerShell</b> and then type</p>
 
