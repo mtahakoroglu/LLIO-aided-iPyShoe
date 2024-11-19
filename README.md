@@ -1,4 +1,4 @@
-<h2>Gradient Boosting Based Loose Learned Inertial Odometry</h2>
+<h2>Loose Learned Inertial Odometry (LLIO)</h2>
 <h3>Creating PyShoe Virtual Environment in Anaconda</h3>
 <p align="justify">After installling Anaconda, launch <b>Anaconda PowerShell</b> and then type</p>
 
@@ -43,20 +43,14 @@ pip install pandas==1.1.5
 
 <h3>Example Results (Own Sensor Data)</h3>
 
-<p align="justify">At this point in our research, when we first tried adaptive INS based on pre-trained LSTM ZUPT detector in PyShoe dataset, we noticed that the adaptive detector is not able to detect some of the strides in the experiments. In order to deal with this problem, which required re-training of the proposed bi-directional LSTM network inevitably, we made corrections (i.e., manual inclusions of missed ZUPT phases and strides, and exclusions of non-bipedal-locomotion data such as crawling) in PyShoe dataset. All mentioned work can be found elaborately in <a href="https://github.com/mtahakoroglu/PyShoe-dataset-correction-for-bipedal-locomotion">supplementary repo.</a></p>
-
-<h3>Example Results (Vicon Data)</h3>
-
-<img src="results/figs/vicon/vicon_data_trajectories_optimal_2017-11-22-11-22-46.png" alt="experiment 2017-11-22-11-22-46 Vicon trajectory" width=%100 height=auto>
-
-<img src="results/figs/vicon/vicon_data_zv_optimal_2017-11-22-11-22-46.png" alt="ZV labels for experiment 2017-11-22-11-22-46 Vicon trajectory" width=%100 height=auto>
+<p align="justify">When adaptive ZUPT (PyShoe with LSTM, not with SVM) aided INS is used with our on collected data, the results showed that the adaptive detector is not able to detect all ZV intervals and the stride indexes. To deal with this problem, we made corrections (i.e., manual inclusions of missed ZUPT phases and strides, and exclusions of non-bipedal-locomotion data such as crawling) in PyShoe dataset. All mentioned work can be found elaborately in the <a href="https://github.com/mtahakoroglu/PyShoe-dataset-annotation-expansion-for-LLIO">supplementary repo.</a></p>
 
 <h3>Adaptive and Robust ZUPT Detection Studies</h3>
 
 <p align="justify">Adaptive ZUPT studies [<a href="#ref1" id="gobacktoref1">1</a>, <a href="#ref2" id="gobacktoref2">2</a>, <a href="#ref3" id="gobacktoref3">3</a>, <a href="#ref4" id="gobacktoref4">4</a>]. Liu <i>et al.</i> proposed an improved generalized likelihood ratio test (IGLRT) approach by using Vicon and Hallway experiments of PyShoe dataset <a href="#ref1" id="gobacktoref1">[1]</a>. Robust ZUPT detection studies employ various non-inertial sensing technologies such as magnetic sensors [<a href="#ref5 id="gobacktoref5"">5</a>], dynamic vision sensors (i.e., event cameras) [<a href="#ref6" id="gobacktoref6">6</a>], range sensor (i.e., ulrasonic sensor) [<a href="#ref7" id="gobacktoref7">7</a>] to accurately detect ZUPT samples in gait cycle and improve INS results.</p>
 
 <h2>Foot-Mounted Pedestrian Inertial Navigation Datasets</h2>
-<p align="justify">There are various datasets that are annotated with Vicon equipments. Some datasets are public [8-9]. Some datasets are not public [13-15]. OptiTrack (an optical motion capture system) study uses Heuristic Drift Reduction (HRD) to deal with heading errors [15].</p>
+<p align="justify">There are various datasets that are annotated with VICON equipments. Some datasets are public [8-9]. Some datasets are not public [13-15]. OptiTrack (an optical motion capture system) study uses Heuristic Drift Reduction (HRD) to deal with heading errors [15].</p>
 
 <h3>About PyShoe Dataset</h3>
 <h4>Johan Wahlström & Isaac Skog's comments</h4>
