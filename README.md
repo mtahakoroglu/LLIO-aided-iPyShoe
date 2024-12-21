@@ -47,7 +47,7 @@ pip install pandas==1.1.5
 
 <h3>Example Results (Own Sensor Data)</h3>
 
-<p align="justify">When adaptive ZUPT (PyShoe with LSTM, not with SVM) aided INS is used with our on collected data, the results showed that the adaptive detector is not able to detect all ZV intervals and the stride indexes. To deal with this problem, we made corrections (i.e., manual inclusions of missed ZUPT phases and strides, and exclusions of non-bipedal-locomotion data such as crawling) in PyShoe dataset. All mentioned work can be found elaborately in the <a href="https://github.com/mtahakoroglu/PyShoe-dataset-annotation-expansion-for-LLIO">supplementary repo.</a></p>
+<p align="justify">When adaptive ZUPT (PyShoe with LSTM, not with SVM) aided INS is used with our on collected data, the results showed that the adaptive detector is not able to detect all ZV intervals and the stride indexes. To deal with this problem, we made corrections (i.e., manual inclusions of missed ZUPT phases and strides, and exclusions of non-bipedal-locomotion data such as crawling) in PyShoe dataset. All mentioned work can be found elaborately in the <a href="https://github.com/mtahakoroglu/PyShoe-annotation-expansion-for-LLIO">supplementary repo.</a></p>
 
 <h3>Adaptive and Robust ZUPT Detection Studies</h3>
 
@@ -84,6 +84,7 @@ the corresponding loop-closure error. In [98], this data set was used to compare
 }
 ```
 
+<h3>REFERENCES</h3>
 <p align="justify" id="ref1"><a href="#gobacktoref1">[1]</a> X. Liu, N. Li and Y. Zhang, <a href="https://ieeexplore.ieee.org/document/9956821" target="_blank">"A Novel Adaptive Zero Velocity Detection Algorithm Based on Improved General Likelihood Ratio Test Detector,"</a> in <i>IEEE Sensors Journal</i>, vol. 22, no. 24, pp. 24479-24492, 2022.</p>
 <p align="justify" id="ref2"><a href="#gobacktoref2">[2]</a> B. Wagstaff, V. Peretroukhin and J. Kelly, <a href="https://ieeexplore.ieee.org/document/8115947" target="_blank">"Improving foot-mounted inertial navigation through real-time motion classification,"</a> in <i>2017 International Conference on Indoor Positioning and Indoor Navigation (IPIN)</i>, Sapporo, Japan, 2017, pp. 1-8.</p>
 <p align="justify" id="ref3"><a href="#gobacktoref3">[3]</a> E. Sangenis, C. -S. Jao and A. M. Shkel, <a href="https://ieeexplore.ieee.org/abstract/document/9967027" target="_blank">"SVM-based Motion Classification Using Foot-mounted IMU for ZUPT-aided INS,"</a> in <i>2022 IEEE Sensors</i>, Dallas, TX, USA, 2022, pp. 1-4.</p>
