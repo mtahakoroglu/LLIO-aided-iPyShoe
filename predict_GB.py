@@ -110,11 +110,12 @@ def parse_mat_file(file_path):
 # 3) Tahmin + Plot
 ##############################################################################
 
-DIST_MODEL_PATH = "dist_model.pkl"
-HEADING_MODEL_PATH = "heading_model.pkl"
-DIST_SCALER_PATH = "dist_scaler.pkl"
-HEADING_SCALER_PATH = "heading_scaler.pkl"
-FEATCOLS_PATH = "feat_cols.pkl"
+GB_MODEL_PATH = "results/GB-model"
+DIST_MODEL_PATH = GB_MODEL_PATH + "/" + "dist_model.pkl"
+HEADING_MODEL_PATH = GB_MODEL_PATH + "/" + "heading_model.pkl"
+DIST_SCALER_PATH = GB_MODEL_PATH + "/" + "dist_scaler.pkl"
+HEADING_SCALER_PATH = GB_MODEL_PATH + "/" + "heading_scaler.pkl"
+FEATCOLS_PATH = GB_MODEL_PATH + "/" + "feat_cols.pkl"
 
 def predict_and_plot(data_dir, save_plots=False):
     # Modelleri yükle
@@ -207,5 +208,5 @@ def predict_and_plot(data_dir, save_plots=False):
                 plt.show()
 
 if __name__ == "__main__":
-    data_directory = r"C:\Users\gokhan\Desktop\iPyShoe-main - lstm\data\LLIO_training_data"
+    data_directory = r"data\LLIO_training_data"
     predict_and_plot(data_directory, save_plots=False)

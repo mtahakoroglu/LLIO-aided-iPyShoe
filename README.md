@@ -10,7 +10,7 @@
 conda create --name LLIO python=3.7
 ```
 
-<p align="justify">to create <b>pyshoe</b> virtual environment (venv). Subsequently, type</p>
+<p align="justify">to create <b>LLIO</b> virtual environment (venv). Subsequently, type</p>
 
 ```
 conda activate LLIO
@@ -40,6 +40,14 @@ conda install matplotlib
 
 ```
 pip install pandas==1.1.5
+```
+
+```
+pip install joblib
+```
+
+```
+pip install xgboost
 ```
 
 <h3>Installing <b>liegroups</b> package</h3>

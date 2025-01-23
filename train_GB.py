@@ -25,11 +25,12 @@ USE_AUGMENT = True      # Data augmentation
 AUG_TIMES = 1       # Kaç kat augment
 N_FOLDS = 8             # Cross-validation fold sayısı
 
-DIST_MODEL_PATH = "dist_model.pkl"
-HEADING_MODEL_PATH = "heading_model.pkl"
-DIST_SCALER_PATH = "dist_scaler.pkl"
-HEADING_SCALER_PATH = "heading_scaler.pkl"
-FEATCOLS_PATH = "feat_cols.pkl"
+GB_MODEL_PATH = "results/GB-model"
+DIST_MODEL_PATH = GB_MODEL_PATH + "/" + "dist_model.pkl"
+HEADING_MODEL_PATH = GB_MODEL_PATH + "/" + "heading_model.pkl"
+DIST_SCALER_PATH = GB_MODEL_PATH + "/" + "dist_scaler.pkl"
+HEADING_SCALER_PATH = GB_MODEL_PATH + "/" + "heading_scaler.pkl"
+FEATCOLS_PATH = GB_MODEL_PATH + "/" + "feat_cols.pkl"
 
 ##############################################################################
 # 1) Özellik Çıkarma (3 eksen ivme)
@@ -325,5 +326,5 @@ def train_models(data_dir):
     print("dist_model, heading_model, dist_scaler, heading_scaler, feat_cols kaydedildi.")
 
 if __name__ == "__main__":
-    data_directory = r"C:\Users\gokhan\Desktop\iPyShoe-main - lstm\data\LLIO_training_data"
+    data_directory = r"data\LLIO_training_data"
     train_models(data_directory)
