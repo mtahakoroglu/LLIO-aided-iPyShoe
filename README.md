@@ -1,21 +1,22 @@
 <h1>Loose Learned Inertial Odometry (LLIO)</h1>
+
 <h2>Reproduction of Paper Results</h2>
 
-<h3>Creating PyShoe Virtual Environment in Anaconda</h3>
+<h3>Creating LLIO Virtual Environment in Anaconda</h3>
 
-<p align="justify">After installling Anaconda, launch <b>Anaconda PowerShell</b> and then type</p>
+<p align="justify">After installing Anaconda, launch <b>Anaconda PowerShell</b> and then type</p>
 
 ```
-conda create --name pyshoe python=3.7
+conda create --name LLIO python=3.7
 ```
 
 <p align="justify">to create <b>pyshoe</b> virtual environment (venv). Subsequently, type</p>
 
 ```
-conda activate pyshoe
+conda activate LLIO
 ```
 
-<p align="justify">to activate <b>pyshoe</b> venv.</p>
+<p align="justify">to activate <b>LLIO</b> venv.</p>
 
 <h3>Installing Required Packages</h3>
 
@@ -43,18 +44,21 @@ pip install pandas==1.1.5
 
 <h3>Installing <b>liegroups</b> package</h3>
 
-<p align="justify">After cloning this repository to your local computer, you must install <b><a href="https://github.com/utiasSTARS/liegroups" target="_blank">liegroups</a></b> package to run the code if you would like to reproduce the results shown here in this repo or the paper.</p>
+<p align="justify">After cloning this repository to your local computer, you must install <b><a href="https://github.com/utiasSTARS/liegroups" target="_blank">liegroups</a></b> package if you would like to reproduce the results shown here in this repo or the paper.</p>
 
-<h3>Example Results (Own Sensor Data)</h3>
+<h3>Supplementary Repo</h3>
 
-<p align="justify">When adaptive ZUPT (PyShoe with LSTM, not with SVM) aided INS is used with our on collected data, the results showed that the adaptive detector is not able to detect all ZV intervals and the stride indexes. To deal with this problem, we made corrections (i.e., manual inclusions of missed ZUPT phases and strides, and exclusions of non-bipedal-locomotion data such as crawling) in PyShoe dataset. All mentioned work can be found elaborately in the <a href="https://github.com/mtahakoroglu/PyShoe-annotation-expansion-for-LLIO">supplementary repo.</a></p>
+<p align="justify">When adaptive ZUPT (PyShoe with LSTM, not with SVM) aided INS is used with our own collected data, the results showed that the adaptive detector is not able to detect all ZV intervals, which means the corresponding strides are missed. To deal with this problem, we made corrections (i.e., manual inclusions of missed ZV intervals and exclusions of non-bipedal-locomotion data such as crawling) in PyShoe dataset after elaborate examination of data plots such as imu time series or 2d spatial trajectory results. Mentioned analysis can be found in the <a href="https://github.com/mtahakoroglu/PyShoe-annotation-expansion-for-LLIO">supplementary repo.</a></p>
 
+
+<!--
 <h3>Adaptive and Robust ZUPT Detection Studies</h3>
 
 <p align="justify">Adaptive ZUPT studies [<a href="#ref1" id="gobacktoref1">1</a>, <a href="#ref2" id="gobacktoref2">2</a>, <a href="#ref3" id="gobacktoref3">3</a>, <a href="#ref4" id="gobacktoref4">4</a>]. Liu <i>et al.</i> proposed an improved generalized likelihood ratio test (IGLRT) approach by using Vicon and Hallway experiments of PyShoe dataset <a href="#ref1" id="gobacktoref1">[1]</a>. Robust ZUPT detection studies employ various non-inertial sensing technologies such as magnetic sensors [<a href="#ref5 id="gobacktoref5"">5</a>], dynamic vision sensors (i.e., event cameras) [<a href="#ref6" id="gobacktoref6">6</a>], range sensor (i.e., ulrasonic sensor) [<a href="#ref7" id="gobacktoref7">7</a>] to accurately detect ZUPT samples in gait cycle and improve INS results.</p>
 
 <h2>Foot-Mounted Pedestrian Inertial Navigation Datasets</h2>
 <p align="justify">There are various datasets that are annotated with VICON equipments. Some datasets are public [8-9]. Some datasets are not public [13-15]. OptiTrack (an optical motion capture system) study uses Heuristic Drift Reduction (HRD) to deal with heading errors [15].</p>
+
 
 <h3>About PyShoe Dataset</h3>
 <h4>Johan Wahlström & Isaac Skog's comments</h4>
@@ -66,6 +70,7 @@ the corresponding loop-closure error. In [98], this data set was used to compare
 <h3>Studies that use PyShoe</h3>
 <p align="justify">In [1] it says: "Publicly Mixed-Motion Dataset (referring to PyShoe): This dataset consists of the VICON dataset, the Hallway dataset, and the stairs-climbing dataset. The VICON dataset is collected by a LORD Micro-Strain 3DM-GX3-25 IMU at 200 Hz. As pointed out in PyShoe, it consists of 60 experiments, which not only includes walking and running modes but also stair-climbing and crawling modes. Both the Hallway dataset and the stairs-climbing dataset are collected by a Vector Nav VN−100 IMU at 200 Hz. The Hallway dataset consists of 38 motion experiments, which includes walking, running, and combined motion modes. The ground truth of the Hallway dataset is obtained by measuring the locations of the flat markers on the floor. A handheld trigger is given to record the current location versus the known marker location. In the stairs-climbing dataset, only the heights of trajectories are recorded."</p>
 <p align="justify">In [1], PyShoe dataset is used to detect the ZVPs for the proposed IGLRT detector, in which not only the ground-truth position information is provided but also the ground-truth binary zero-velocity labels (moving versus stationary) are also provided. Since the trajectories of trials in the VICON dataset are very short, the Hallway dataset is also used to evaluate the performance of the proposed IGLRT detector.</p>
+-->
 
 <h2>Citation</h2>
 
@@ -84,6 +89,7 @@ the corresponding loop-closure error. In [98], this data set was used to compare
 }
 ```
 
+<!--
 <h3>REFERENCES</h3>
 <p align="justify" id="ref1"><a href="#gobacktoref1">[1]</a> X. Liu, N. Li and Y. Zhang, <a href="https://ieeexplore.ieee.org/document/9956821" target="_blank">"A Novel Adaptive Zero Velocity Detection Algorithm Based on Improved General Likelihood Ratio Test Detector,"</a> in <i>IEEE Sensors Journal</i>, vol. 22, no. 24, pp. 24479-24492, 2022.</p>
 <p align="justify" id="ref2"><a href="#gobacktoref2">[2]</a> B. Wagstaff, V. Peretroukhin and J. Kelly, <a href="https://ieeexplore.ieee.org/document/8115947" target="_blank">"Improving foot-mounted inertial navigation through real-time motion classification,"</a> in <i>2017 International Conference on Indoor Positioning and Indoor Navigation (IPIN)</i>, Sapporo, Japan, 2017, pp. 1-8.</p>
@@ -101,3 +107,4 @@ the corresponding loop-closure error. In [98], this data set was used to compare
 <p align="justify"#id="ref14"><a href="#gobacktoref14">[14]</a> Guimarães, V.; Sousa, I.; Correia, M.V. <a href="https://www.mdpi.com/1424-8220/21/22/7517" target="_blank">A Deep Learning Approach for Foot Trajectory Estimation in Gait Analysis Using Inertial Sensors.</a> <i>Sensors</i> 2021, 21, 7517.</p>
 <p align="justify"#id="ref15"><a href="#gobacktoref15">[15]</a> J. Li et al., <a href="https://ieeexplore.ieee.org/abstract/document/10229495" taget="_blank">"Learning-Based Stance Phase Detection and Multisensor Data Fusion for ZUPT-Aided Pedestrian Dead Reckoning System,"</a> in <i>IEEE Internet of Things Journal</i>, vol. 11, no. 4, pp. 5899-5911, 15 Feb., 2024.</p>
 </ul>
+-->

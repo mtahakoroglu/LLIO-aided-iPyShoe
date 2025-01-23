@@ -1,10 +1,11 @@
 import numpy as np
 from numpy import linalg as LA
-import ins_tools.LSTM as lstm #remove if there is no pytorch installation
-import ins_tools.SVM as SVM #remove if there is no sci-kit-learn installation
+import ins_tools.LSTM as lstm # remove if there is no pytorch installation
+import ins_tools.SVM as SVM # remove if there is no sci-kit-learn installation
 from ins_tools.util import *
 from ins_tools.geometry_helpers import quat2mat, mat2quat, euler2quat, quat2euler
 from sklearn.externals import joblib
+from ins_tools.LSTM import BiLSTM
 import sys
 sys.path.append('../')
 
@@ -15,10 +16,14 @@ class Localizer():
         self.gt = None  # Initialize gt to None
         self.ts = None
         self.count=1
+        self.bilstm_model = BiLSTM()
+
     def set_gt(self, gt):
         self.gt = gt  # Method to set the gt attribute later
+
     def set_ts(self, time):
         self.ts = time
+
     def init(self):
         imudata = self.imudata
         x = np.zeros((imudata.shape[0],9)) #initialize state to be at 0
@@ -41,10 +46,13 @@ class Localizer():
         P_hat[0,6:9,6:9] = np.power(0.1*np.pi/180,2)*np.identity(3) #np.power(0.1*np.pi/180,2)*np.identity(3)
         return x, q, P_hat
           
-    def nav_eq(self, xin,imu,qin,dt):
-        #update Quaternions
-        x_out = np.copy(xin) #initialize the output
-        omega = np.array([[0,-imu[3], -imu[4], -imu[5]],  [imu[3], 0, imu[5], -imu[4]],  [imu[4], -imu[5], 0, imu[3]],  [imu[5], imu[4], -imu[3], 0]])
+    def nav_eq(self, xin, imu, qin, dt):
+        # update Quaternions
+        x_out = np.copy(xin) # initialize the output
+        omega = np.array([[0, -imu[3], -imu[4], -imu[5]], 
+                          [imu[3], 0, imu[5], -imu[4]], 
+                          [imu[4], -imu[5], 0, imu[3]], 
+                          [imu[5], imu[4], -imu[3], 0]])
     
         norm_w = LA.norm(imu[3:6])
         if(norm_w*dt != 0):
@@ -55,15 +63,16 @@ class Localizer():
         attitude = quat2euler(q_out,'sxyz')#update euler angles
         x_out[6:9] = attitude    
         
-        Rot_out = quat2mat(q_out)   #get rotation matrix from quat
-        acc_n = Rot_out.dot(imu[0:3])       #transform acc to navigation frame,  
-        acc_n = acc_n + np.array([0,0,self.config["g"]])   #removing gravity (by adding)
+        Rot_out = quat2mat(q_out) # get rotation matrix from quat
+        acc_n = Rot_out.dot(imu[0:3]) # transform acc to navigation frame,  
+        acc_n = acc_n + np.array([0,0,self.config["g"]]) # removing gravity (by adding)
         
-        x_out[3:6] += dt*acc_n #velocity update
-        x_out[0:3] += dt*x_out[3:6] +0.5*np.power(dt,2)*acc_n #position update
+        x_out[3:6] += dt*acc_n # velocity update
+        x_out[0:3] += dt*x_out[3:6] +0.5*np.power(dt,2)*acc_n # position update
         
-        return x_out, q_out, Rot_out    
-    def state_update(self, imu,q, dt):
+        return x_out, q_out, Rot_out, acc_n
+    
+    def state_update(self, imu, q, dt):
 #        return F,G
         F = np.identity(9)
         F[0:3,3:6] = dt*np.identity(3)
@@ -77,17 +86,18 @@ class Localizer():
         G[3:6,0:3] = dt*Rot
         G[6:9,3:6] = -dt*Rot
        
-        return F,G
+        return F, G
+    
     def corrector(self, x_check, P_check, Rot):
         eye3 = np.identity(3)
         eye9 = np.identity(9)
         omega = np.zeros((3,3))        
         
         K = (P_check.dot(self.config["H"].T)).dot(LA.inv((self.config["H"].dot(P_check)).dot(self.config["H"].T) + self.config["R"]))
-        z = -x_check[3:6] ### true state is 0 velocity, current velocity is error
-        q=mat2quat(Rot)   
+        z = -x_check[3:6] # true state is 0 velocity, current velocity is error
+        q = mat2quat(Rot)   
         dx = K.dot(z) 
-        x_check += dx  ###inject position and velocity error
+        x_check += dx  # inject position and velocity error
          
         omega[0:3,0:3] = [[0,-dx[8], dx[7]],[dx[8],0,-dx[6]],[-dx[7],dx[6],0]] 
         Rot = (eye3+omega).dot(Rot)
@@ -96,6 +106,7 @@ class Localizer():
         x_check[6:9] = attitude    #Inject rotational error           
         P_check = (eye9-K.dot(self.config["H"])).dot(P_check)
         P_check = (P_check + P_check.T)/2
+
         return x_check, P_check, q
 
 
@@ -157,7 +168,7 @@ class Localizer():
         zupt = zupt/W    
         return zupt
         
-    def MBGTD(self,W=5):
+    def MBGTD(self, W=5):
         imudata = self.imudata
         zupt = np.ones(imudata.shape[0])
         acc = imudata[:,0:3]
@@ -199,6 +210,11 @@ class Localizer():
         lstm_detector = lstm.LSTM()
         zv_lstm = lstm_detector(self.imudata)
         return zv_lstm
+
+    def BiLSTM(self):
+        bilstm_detector = lstm.BiLSTM()  # Use the BiLSTM class from LSTM.py
+        zv_bilstm = bilstm_detector(self.imudata)
+        return zv_bilstm
     
     def adaptive_zv(self, W=5, G=[1e7, 35e7]): #specify [G_walk, G_run]
         G_walk = G[0]
@@ -240,6 +256,8 @@ class Localizer():
             zv = self.MBGTD(W=W)
         if detector == 'lstm':
             return self.LSTM()
+        if detector == 'bilstm':
+            return self.bilstm_model.compute_zv_lrt(self.imudata)
         if detector == 'adaptive':
             return self.adaptive_zv(W,G)
         if detector == 'vicon':
@@ -247,5 +265,3 @@ class Localizer():
         if return_zv:
             zv=zv<G
         return zv
-
-        
