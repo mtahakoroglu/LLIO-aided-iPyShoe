@@ -110,12 +110,12 @@ def parse_mat_file(file_path):
 # 3) Tahmin + Plot
 ##############################################################################
 
-GB_MODEL_PATH = "results/GB-model"
-DIST_MODEL_PATH = GB_MODEL_PATH + "/" + "dist_model.pkl"
-HEADING_MODEL_PATH = GB_MODEL_PATH + "/" + "heading_model.pkl"
-DIST_SCALER_PATH = GB_MODEL_PATH + "/" + "dist_scaler.pkl"
-HEADING_SCALER_PATH = GB_MODEL_PATH + "/" + "heading_scaler.pkl"
-FEATCOLS_PATH = GB_MODEL_PATH + "/" + "feat_cols.pkl"
+GB_MODEL_PATH = "results/GB-model/"
+DIST_MODEL_PATH = GB_MODEL_PATH + "dist_model.pkl"
+HEADING_MODEL_PATH = GB_MODEL_PATH + "heading_model.pkl"
+DIST_SCALER_PATH = GB_MODEL_PATH + "dist_scaler.pkl"
+HEADING_SCALER_PATH = GB_MODEL_PATH + "heading_scaler.pkl"
+FEATCOLS_PATH = GB_MODEL_PATH + "feat_cols.pkl"
 
 def predict_and_plot(data_dir, save_plots=False):
     # Modelleri yükle
